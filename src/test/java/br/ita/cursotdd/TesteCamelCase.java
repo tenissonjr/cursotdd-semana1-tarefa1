@@ -12,11 +12,9 @@ public class TesteCamelCase {
 	public void quandoInformarStringVaziaOuNula_DeveRetornarListaVazia() {
 		
 		List<String> palavras = StringUtil.converterCamelCase(null);
-		
 		assertTrue(palavras!=null && palavras.isEmpty());
 		
 		palavras = StringUtil.converterCamelCase("");
-		
 		assertTrue(palavras!=null && palavras.isEmpty());
 		
 	}
