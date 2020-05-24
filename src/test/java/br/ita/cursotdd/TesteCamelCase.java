@@ -33,5 +33,13 @@ public class TesteCamelCase {
 		List<String> palavras = StringUtil.converterCamelCase("Nome");
 		assertTrue(palavras!=null && palavras.size()==1 && palavras.get(0).equals("nome"));
 		
+	}	
+	
+	@Test
+	public void quandoInformarStringComCPFMaiuscula_DeveRetornarListaComUmElementoEmMaiuscula() {
+		
+		List<String> palavras = StringUtil.converterCamelCase("CPF");
+		assertTrue(palavras!=null && palavras.size()==1 && palavras.get(0).equals("CPF"));
+		
 	}		
 }
