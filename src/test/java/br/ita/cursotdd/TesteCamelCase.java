@@ -19,4 +19,11 @@ public class TesteCamelCase {
 		
 	}
 
+	@Test
+	public void quandoInformarStringUnica_DeveRetornarListaComUmElemento() {
+		
+		List<String> palavras = StringUtil.converterCamelCase("nome");
+		assertTrue(palavras!=null && palavras.size()==1 && palavras.get(0).equals("nome"));
+		
+	}	
 }
