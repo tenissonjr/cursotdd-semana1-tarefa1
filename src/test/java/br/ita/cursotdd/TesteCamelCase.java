@@ -26,4 +26,12 @@ public class TesteCamelCase {
 		assertTrue(palavras!=null && palavras.size()==1 && palavras.get(0).equals("nome"));
 		
 	}	
+	
+	@Test
+	public void quandoInformarStringUnicaInciadaPorMaiuscula_DeveRetornarListaComUmElementoEmMinuscula() {
+		
+		List<String> palavras = StringUtil.converterCamelCase("Nome");
+		assertTrue(palavras!=null && palavras.size()==1 && palavras.get(0).equals("nome"));
+		
+	}		
 }
