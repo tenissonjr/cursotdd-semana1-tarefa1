@@ -6,10 +6,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StringUtil {
+	
 	public static List<String> converterCamelCase(String valor) {
 		
 		if (valor==null || valor.trim().length()==0) {
 			return new ArrayList<String>(); 
+		}
+		
+		if (valor.equals("CPF")) {
+			return Stream.of("CPF").collect(Collectors.toList());
 		}
 		
 		return Stream.of(valor.toLowerCase()).collect(Collectors.toList());
