@@ -12,6 +12,6 @@ public class StringUtil {
 			return new ArrayList<String>(); 
 		}
 		
-		return Stream.of(valor).collect(Collectors.toList());
+		return Stream.of(valor.toLowerCase()).collect(Collectors.toList());
 	}
 }
