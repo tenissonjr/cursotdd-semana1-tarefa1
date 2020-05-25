@@ -87,4 +87,23 @@ public class TesteCamelCase {
 		
 	}	
 	
+	@Test
+	public void quandoInformarStringComCPFMaiusculaNoMeioDaPalavra_DeveRetornarListaContendoCPFMaisculo() {
+		
+		List<String> palavras = StringUtil.converterCamelCase("numeroCPFContribuinte");
+		assertTrue(palavras!=null && palavras.size()==3 
+					&& palavras.get(0).equals("numero")
+					&& palavras.get(1).equals("CPF")
+					&& palavras.get(2).equals("contribuinte")
+					);
+		
+		 palavras = StringUtil.converterCamelCase("CPFCPFCPFCPF");
+			assertTrue(palavras!=null && palavras.size()==4
+						&& palavras.get(0).equals("CPF")
+						&& palavras.get(1).equals("CPF")
+						&& palavras.get(2).equals("CPF")
+						&& palavras.get(3).equals("CPF")
+						);		
+		
+	}	
 }
