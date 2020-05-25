@@ -21,6 +21,16 @@ public class StringUtil {
 		return valor;
 	}
 
+	private static String obterPrimeiraPalavraExcecao(String valorParam) {
+		for (String palavraExcecao : excecoes.values()) {
+			if(valorParam.trim().startsWith(palavraExcecao)) {
+				return palavraExcecao;
+			}
+		} 
+		return "";
+	}
+	
+	
 	private static boolean isValorInvalido(String valorParam) {
 		return ! Pattern.matches("[a-zA-Z]+", valorParam);
 	}
@@ -34,9 +44,37 @@ public class StringUtil {
 		if (isValorInvalido(valorParam)) {
 			throw new RuntimeException("Inválido-caracteres especiais não são permitidos, somente letras e números.");
 		}
+		
+		String primeiraPalavraExececao = obterPrimeiraPalavraExcecao(valorParam);
+		if (primeiraPalavraExececao!="") {
+			String primeiraPalavra = excecoes.get(primeiraPalavraExececao);
+			List<String> palavras = Stream.of(primeiraPalavra).collect(Collectors.toList());
+			
+			String palavrasRestantes = valorParam.replace(primeiraPalavraExececao, "");
+			palavras.addAll(converterCamelCase(palavrasRestantes))	;
+			
+			return palavras;
+		} else {
+			int posicao = 0 ;
+			for (Character ch : valorParam.toCharArray()) {
+				if(Character.isUpperCase(ch) && posicao>0) {
+						String primeiraPalavra = valorParam.substring(0, posicao);
+						List<String> palavras = converterCamelCase(primeiraPalavra);
+						
+						String palavrasRestantes = valorParam.substring(posicao);
+						palavras.addAll(converterCamelCase(palavrasRestantes))	;
+							
+					return palavras ;
+				}
+				posicao++;
+			}
+		}
 		String valor = formatarString(valorParam);
 
 		return Stream.of(valor).collect(Collectors.toList());
 	}
+
+
+
 
 }
