@@ -32,7 +32,7 @@ public class StringUtil {
 		for (String palavraExcecao : excecoes.values()) {
 			if(palavraInicial.trim().startsWith(palavraExcecao)) {
 				String primeiraPalavra  = excecoes.get(palavraExcecao);
-				String demaisPalavras  	= palavraInicial.replace(palavraExcecao, "");
+				String demaisPalavras  	= palavraInicial.replaceFirst(palavraExcecao, "");
 				return new String[]{primeiraPalavra, demaisPalavras} ;
 			}
 		}		
@@ -85,7 +85,7 @@ public class StringUtil {
 		}
 
 		retorno.add(arrDivisaoPalavras[0]);
-		if (arrDivisaoPalavras[1]!="") {
+		if (arrDivisaoPalavras[1].length()>0) {
 			retorno.addAll(separarPalavrasEmLista(arrDivisaoPalavras[1])); 
 		}
 		return retorno;
