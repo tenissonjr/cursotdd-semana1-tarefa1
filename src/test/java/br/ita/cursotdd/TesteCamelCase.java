@@ -81,7 +81,7 @@ public class TesteCamelCase {
 		assertTrue(palavras!=null && palavras.size()==3 
 					&& palavras.get(0).equals("recupera")
 					&& palavras.get(1).equals("10")
-					&& palavras.get(1).equals("primeiros")
+					&& palavras.get(2).equals("primeiros")
 					);
 		
 		
