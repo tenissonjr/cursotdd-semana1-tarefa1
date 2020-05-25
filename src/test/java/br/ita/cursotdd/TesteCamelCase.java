@@ -53,7 +53,7 @@ public class TesteCamelCase {
 	}		
 	
 	@Test
-	public void quandoInformarStringComNomeCompostp_DeveRetornarListaComVariosElementos() {
+	public void quandoInformarStringComNomeComposto_DeveRetornarListaComVariosElementos() {
 		
 		List<String> palavras = StringUtil.converterCamelCase("nomeComposto");
 		assertTrue(palavras!=null && palavras.size()==2 
@@ -68,5 +68,23 @@ public class TesteCamelCase {
 					);	
 		
 	}		
+	
+	@Test(expected = RuntimeException.class)
+	public void quandoInformarStringComecandoComNumero_DeveLancarExcecao() {
+		StringUtil.converterCamelCase("10Primeiros");
+	}		
+		
+	@Test
+	public void quandoInformarStringComNumeroIinterno_DeveRetornarListaContendoNumero() {
+		
+		List<String> palavras = StringUtil.converterCamelCase("recupera10Primeiros");
+		assertTrue(palavras!=null && palavras.size()==3 
+					&& palavras.get(0).equals("recupera")
+					&& palavras.get(1).equals("10")
+					&& palavras.get(1).equals("primeiros")
+					);
+		
+		
+	}	
 	
 }
