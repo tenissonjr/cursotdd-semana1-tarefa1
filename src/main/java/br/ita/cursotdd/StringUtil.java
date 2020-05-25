@@ -55,7 +55,6 @@ public class StringUtil {
 		}else {
 			primeiraPalavra = palavraInicial.toLowerCase();
 		}
-		
 		return new String[]{primeiraPalavra, demaisPalavras};
 	}	
 	
