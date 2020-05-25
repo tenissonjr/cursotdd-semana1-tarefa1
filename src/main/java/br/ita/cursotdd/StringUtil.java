@@ -2,21 +2,31 @@ package br.ita.cursotdd;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StringUtil {
-	
-	public static List<String> converterCamelCase(String valor) {
-		
-		if (valor==null || valor.trim().length()==0) {
-			return new ArrayList<String>(); 
+
+	private static Map<String, String> excecoes = Map.of("CPF", "CPF");
+
+	private static String formatarString(String valor) {
+
+		if (excecoes.containsKey(valor)) {
+			valor = excecoes.get(valor);
+		} else {
+			valor = valor.toLowerCase();
 		}
-		
-		if (valor.equals("CPF")) {
-			return Stream.of("CPF").collect(Collectors.toList());
+		return valor;
+	}
+
+	public static List<String> converterCamelCase(String valorParam) {
+
+		if (valorParam == null || valorParam.trim().length() == 0) {
+			return new ArrayList<String>();
 		}
-		
-		return Stream.of(valor.toLowerCase()).collect(Collectors.toList());
+		String valor = formatarString(valorParam);
+
+		return Stream.of(valor).collect(Collectors.toList());
 	}
 }
