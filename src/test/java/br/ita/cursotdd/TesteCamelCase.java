@@ -41,5 +41,15 @@ public class TesteCamelCase {
 		List<String> palavras = StringUtil.converterCamelCase("CPF");
 		assertTrue(palavras!=null && palavras.size()==1 && palavras.get(0).equals("CPF"));
 		
+	}	
+	
+	@Test(expected = RuntimeException.class)
+	public void quandoInformarStringComCaracteresEspeciais_DeveLancarExcecao() {
+		
+		StringUtil.converterCamelCase("nome#");
+		StringUtil.converterCamelCase("_nome");
+		StringUtil.converterCamelCase("nom@e");
+
 	}		
+	
 }
