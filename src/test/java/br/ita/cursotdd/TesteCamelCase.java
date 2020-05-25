@@ -52,4 +52,21 @@ public class TesteCamelCase {
 
 	}		
 	
+	@Test
+	public void quandoInformarStringComNomeCompostp_DeveRetornarListaComVariosElementos() {
+		
+		List<String> palavras = StringUtil.converterCamelCase("nomeComposto");
+		assertTrue(palavras!=null && palavras.size()==2 
+					&& palavras.get(0).equals("nome")
+					&& palavras.get(0).equals("composto")
+					);
+		
+		palavras = StringUtil.converterCamelCase("NomeComposto");
+		assertTrue(palavras!=null && palavras.size()==2 
+					&& palavras.get(0).equals("nome")
+					&& palavras.get(0).equals("composto")
+					);	
+		
+	}		
+	
 }
