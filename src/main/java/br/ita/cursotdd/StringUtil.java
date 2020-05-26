@@ -11,91 +11,98 @@ public class StringUtil {
 
 	private static Map<String, String> excecoes = Map.of("CPF", "CPF");
 	
-	private static boolean isPrimeiraPalavraEhExececao(String valorParam) {
+	private static boolean isPrimeiraPalavraConstituiExececao(String texto) {
 		for (String palavraExcecao : excecoes.values()) {
-			if(valorParam.trim().startsWith(palavraExcecao)) {
-				return true;
-			}
-		} 
+			if(texto.trim().startsWith(palavraExcecao)) 
+					return true;
+		}
 		return false;
 	}
 
-	private static boolean isValorInvalido(String valor) {
-		return ! Pattern.matches("[a-zA-Z0-9]+", valor);
+	private static boolean isTextoPossuiCaracteresInvalidos(String texto) {
+		return ! Pattern.matches("[a-zA-Z0-9]+", texto);
 	}
 
-	private static boolean isNumeric(String valor) {
-		return  Pattern.matches("[0-9]+", valor);
+	private static boolean isTextoNumerico(String texto) {
+		return  Pattern.matches("[0-9]+", texto);
 	}	
 	
-	private static String[] getDivisaoPalavrasExecao(String palavraInicial) {
-		for (String palavraExcecao : excecoes.values()) {
-			if(palavraInicial.trim().startsWith(palavraExcecao)) {
-				String primeiraPalavra  = excecoes.get(palavraExcecao);
-				String demaisPalavras  	= palavraInicial.replaceFirst(palavraExcecao, "");
-				return new String[]{primeiraPalavra, demaisPalavras} ;
-			}
-		}		
-		return new String[]{palavraInicial, ""} ;	
+	class SeparacaoPalavras{
+		String primeiraPalavra ="";
+		String demaisPalavras  ="";
+		public SeparacaoPalavras(String primeiraPalavra, String demaisPalavras) {
+			super();
+			this.primeiraPalavra = primeiraPalavra;
+			this.demaisPalavras = demaisPalavras;
+		}
 	}
+	private static SeparacaoPalavras criarSeparacaoPalavras(String primeiraPalavra, String demaisPalavras) {
+		return  (new StringUtil()).new SeparacaoPalavras(primeiraPalavra,demaisPalavras); 
+	}	
+	 	
 	
-	private static String[] getDivisaoPalavrasOrdinarias(String palavraInicial) {
-		String primeiraPalavra 	=""; 
-		String demaisPalavras 	="";
+	private static int obterIndiceSeparadorPalavras(String palavraInicial) {
+		int indiceSeparadorDePalavras=0;
 		boolean caracterAnteriorDigito = isDigit(palavraInicial.charAt(0)) ;
-		int posicao=0;
-		while (++posicao < palavraInicial.length()) {
-			char caracter = palavraInicial.charAt(posicao);
+		while (++indiceSeparadorDePalavras < palavraInicial.length()) {
+			char caracter = palavraInicial.charAt(indiceSeparadorDePalavras);
 			if ( isUpperCase(caracter)) 						break;
 			if ( isDigit(caracter) && !caracterAnteriorDigito) 	break;	
-		}	
-		if (posicao<palavraInicial.length()) {
-			primeiraPalavra =  (palavraInicial.substring(0, posicao)).toLowerCase();
-			demaisPalavras  	= palavraInicial.substring(posicao);		
-		}else {
-			primeiraPalavra = palavraInicial.toLowerCase();
 		}
-		return new String[]{primeiraPalavra, demaisPalavras};
+		return indiceSeparadorDePalavras;
 	}	
 	
-	public static List<String> converterCamelCase(String valorParam) {
-		if (valorParam == null || valorParam.trim().length() == 0) {
-			return new ArrayList<String>() ;
+	private static SeparacaoPalavras separarPalavraQueNaoPossuiExcecaoNoInicio(String texto) {
+		int indiceSeparadorDePalavras = obterIndiceSeparadorPalavras(texto);	
+		if (indiceSeparadorDePalavras<texto.length()) {
+			return criarSeparacaoPalavras((texto.substring(0, indiceSeparadorDePalavras)).toLowerCase()
+												, texto.substring(indiceSeparadorDePalavras));
+		}else {
+			return criarSeparacaoPalavras(texto.toLowerCase(), "");
 		}
-		if (isValorInvalido(valorParam)) {
-			throw new RuntimeException("Caracteres especiais não são permitidos, somente letras e números.");
-		}	
-		List<String> retorno = separarPalavrasEmLista(valorParam);
-		if ( (!retorno.isEmpty()) && (isNumeric(retorno.get(0))) ) {
-			throw new RuntimeException("Não deve começar com números.");
-		}		
-		return retorno ;
 	}
 
-
-
-	private static List<String> separarPalavrasEmLista(String valorParam) {
-		
-		List<String> retorno = new ArrayList<String>() ;
-		String[] arrDivisaoPalavras = {"",""};
-		if (isPrimeiraPalavraEhExececao(valorParam)) {
-			arrDivisaoPalavras =getDivisaoPalavrasExecao(valorParam);
+	private static SeparacaoPalavras separarPalavraQuePossuiExcecaoNoInicio(String texto) {
+		for (String palavraExcecao : excecoes.values()) {
+			if(texto.trim().startsWith(palavraExcecao)) {
+				return criarSeparacaoPalavras( excecoes.get(palavraExcecao), texto.replaceFirst(palavraExcecao, ""));
+			}
+		}		
+		return criarSeparacaoPalavras(texto, "") ;		
+	}
+	
+	private static SeparacaoPalavras separarPalavras(String texto) {
+		if (isPrimeiraPalavraConstituiExececao(texto)) {
+			 return separarPalavraQuePossuiExcecaoNoInicio(texto);
 		}else {
-			arrDivisaoPalavras =getDivisaoPalavrasOrdinarias(valorParam);
+			return separarPalavraQueNaoPossuiExcecaoNoInicio(texto);
 		}
-
-		retorno.add(arrDivisaoPalavras[0]);
-		if (arrDivisaoPalavras[1].length()>0) {
-			retorno.addAll(separarPalavrasEmLista(arrDivisaoPalavras[1])); 
+		
+	}
+	
+	private static List<String> separarPalavrasEmLista(String texto) {
+		List<String> retorno = new ArrayList<String>() ;
+		SeparacaoPalavras separacaoPalavras = separarPalavras(texto);
+		retorno.add(separacaoPalavras.primeiraPalavra);
+		if (separacaoPalavras.demaisPalavras.length()>0) {
+			retorno.addAll(separarPalavrasEmLista(separacaoPalavras.demaisPalavras)); 
 		}
 		return retorno;
 	}
 
 
-
-
-
-
+	public static List<String> converterCamelCase(String original) {
+		
+		if (original == null || original.trim().length() == 0) 
+				return new ArrayList<String>() ;
+		if (isTextoPossuiCaracteresInvalidos(original)) 
+				throw new RuntimeException("Caracteres especiais não são permitidos, somente letras e números.");
+		List<String> palavras = separarPalavrasEmLista(original);
+		if ( (!palavras.isEmpty()) && (isTextoNumerico(palavras.get(0))) ) 
+				throw new RuntimeException("Não deve começar com números.");	
+		return palavras ;
+		
+	}
 
 
 }
